@@ -8,7 +8,7 @@ import pytz
 from datetime import datetime as dt
 
 
-class checkVaccine:
+class CheckVaccine:
     def __init__(self):
         load_dotenv(override=True)
         self.base_uri = os.environ['BASEURI']
@@ -87,15 +87,23 @@ class checkVaccine:
         return available
 
 
-    def get_department_info(self, city_code, available=None):
+    def get_items(self, city_code):
+        items = dict()
+        uri = f'{self.base_uri}/{city_code}/item'
+        r = requests.get(url=uri)
+        r_json = r.json()
+        
+        for item in r_json['item']:
+            items[int(item['id'])] = item['name']
+
+        return items
+
+
+    def get_department_info(self, city_code, available=None, vaccines=None):
         i = 0
-        vaccines = {
-                1:'ファイザー社ワクチン',
-                2:'アストラゼネカ社ワクチン',
-                3:'モデルナ社ワクチン',
-                4:'ファイザー社（５から１１歳用）',
-                5:'ノババックス社ワクチン'
-                }
+        if not vaccines:
+            vaccines = self.get_items(city_code)
+            
         l_rtn_data = list()
         available_dept = list()
         uri = f'{self.base_uri}/{city_code}/department/'
@@ -119,7 +127,7 @@ class checkVaccine:
             i = 0
             for item in items:
                 items[i] = {
-                        items[i]:vaccines[int(items[i])]
+                        items[i]:vaccines[items[i]]
                         }
                 i += 1
 
