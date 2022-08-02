@@ -1,0 +1,2 @@
+# covidVaccineAvailabilityChecker
+対応地域のワクチン接種予約の空き情報をログインせずに確認できるpythonライブラリです．
