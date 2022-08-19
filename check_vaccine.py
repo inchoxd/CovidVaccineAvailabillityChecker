@@ -21,8 +21,8 @@ class CheckVaccine:
         return area_ids
 
 
-    def can_reserve_date(self, city_code, available, date):
-        uri = f'{self.base_uri}/{city_code}/reservation_frame/?department_id={available}&item_id=1&start_date_after={date}&start_date_before={date}'
+    def can_reserve_date(self, city_code, available, date_after, date_before):
+        uri = f'{self.base_uri}/{city_code}/reservation_frame/?department_id={available}&item_id=1&start_date_after={date_after}&start_date_before={date_before}'
         r = requests.get(url=uri)
         r_json = r.json()
 
